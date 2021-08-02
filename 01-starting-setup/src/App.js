@@ -16,6 +16,12 @@ const DUMMY_EXPENSES = [
     amount: 123,
     date: new Date(),
   },
+  {
+    id: "3",
+    title: "Hamburger",
+    amount: 123,
+    date: new Date(2020, 1, 3)
+  }
 ];
 
 function App() {
