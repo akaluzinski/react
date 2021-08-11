@@ -1,12 +1,14 @@
 import Card from "../UI/card/Card";
 
+import classes from './AddUser.module.css'
+
 const AddUser = (props) => {
   const addUserHandler = (event) => {
     event.preventDefault();
   };
 
   return (
-    <Card>
+    <Card className={classes.input}>
       <form onSubmit={addUserHandler}>
         <label htmlFor="username">Username</label>
         <input type="text" id="username"></input>
