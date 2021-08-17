@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Card from "../UI/card/Card";
 import classes from './UserList.module.css';
@@ -8,7 +8,7 @@ const UsersList = (props) => {
     <Card className={classes.users}>
       <ul>
         {props.users.map((user) => (
-          <li>
+          <li key={user.id}>
             {user.name} ({user.age} years old)
           </li>
         ))}
