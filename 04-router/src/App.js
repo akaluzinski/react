@@ -1,27 +1,25 @@
-import { Route, Redirect } from "react-router-dom";
-import Welcome from "./Welcome";
-import Products from "./Products";
-import MainHeader from "./MainHeader";
-import ProductDetails from "./ProductDetails";
+import { Route, Switch, Redirect } from "react-router-dom";
+import AllTasks from "./components/AllTasks";
+import Task from "./components/Task";
+import NewTask from "./components/NewTask";
 
 function App() {
   return (
     <div>
-      <MainHeader></MainHeader>
-      <main>
+      <Switch>
         <Route path="/" exact>
-          <Redirect to="/welcome"></Redirect>
+          <Redirect to="/tasks"></Redirect>
         </Route>
-        <Route path="/welcome">
-          <Welcome></Welcome>
+        <Route path="/tasks" exact>
+          <AllTasks></AllTasks>
         </Route>
-        <Route path="/products" exact>
-          <Products></Products>
+        <Route path="/tasks/:taskId">
+          <Task></Task>
         </Route>
-        <Route path="/products/:productId">
-          <ProductDetails></ProductDetails>
+        <Route path="/new-task">
+          <NewTask></NewTask>
         </Route>
-      </main>
+      </Switch>
     </div>
   );
 }
