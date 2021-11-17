@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import Welcome from "./Welcome";
 import Products from "./Products";
 import MainHeader from "./MainHeader";
@@ -9,6 +9,9 @@ function App() {
     <div>
       <MainHeader></MainHeader>
       <main>
+        <Route path="/" exact>
+          <Redirect to="/welcome"></Redirect>
+        </Route>
         <Route path="/welcome">
           <Welcome></Welcome>
         </Route>
