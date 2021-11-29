@@ -3,10 +3,30 @@ import { useState, useRef } from "react";
 import classes from "./AuthForm.module.css";
 
 const API_URL = "https://identitytoolkit.googleapis.com";
-const API_KEY = "AIzaSyBkROQ0ksWxiq5QpJpyfC0YKZHl";
+const API_KEY = "AIzaSyBkROQ0ksWxiq5QpJpyfC0YKZHl-KCFr08";
 
 const APPLICATION_JSON = "application/json";
 const CONTENT_TYPE_JSON_HEADER = { "Content-Type": APPLICATION_JSON };
+
+const signIn = (email, password) => {
+  return sendPost("signInWithPassword", email, password);
+};
+
+const signUp = (email, password) => {
+  return sendPost("signUp", email, password);
+};
+
+const sendPost = (method, email, password) => {
+  return fetch(`${API_URL}/v1/accounts:${method}?key=${API_KEY}`, {
+    method: "POST",
+    headers: { ...CONTENT_TYPE_JSON_HEADER },
+    body: JSON.stringify({
+      email,
+      password,
+      returnSecureToken: true,
+    }),
+  });
+};
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -25,18 +45,34 @@ const AuthForm = () => {
     const password = passwordInputRef.current.value;
 
     if (isLogin) {
-      //todo login
+      setIsLoading(true);
+      signIn(email, password)
+        .then((response) => {
+          setIsLoading(false);
+          if (response.ok) {
+            return response.json();
+          } else {
+            response
+              .json()
+              .then((data) => {
+                let errorMessage = "Sign up failed: ";
+                if (data?.error?.message) {
+                  errorMessage = errorMessage + data.error.message;
+                }
+                console.log("ret a", errorMessage);
+                throw new Error(errorMessage);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        })
+        .then((data) => {
+          console.log("sign in successful", data);
+        });
     } else {
       setIsLoading(true);
-      fetch(`${API_URL}/v1/accounts:signUpWithCustomToken?key=${API_KEY}`, {
-        method: "POST",
-        headers: { ...CONTENT_TYPE_JSON_HEADER },
-        body: JSON.stringify({
-          email,
-          password,
-          returnSecureToken: true,
-        }),
-      }).then((response) => {
+      signUp(email, password).then((response) => {
         setIsLoading(false);
         if (response.ok) {
           //cool cool cool
