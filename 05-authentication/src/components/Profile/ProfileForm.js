@@ -1,4 +1,5 @@
 import { useContext, useRef } from "react";
+import { useHistory } from "react-router";
 import classes from "./ProfileForm.module.css";
 import { sendPost } from "../Auth/AuthForm";
 import AuthContext from "../../store/auth-context";
@@ -8,6 +9,7 @@ const update = (idToken, password) => {
 };
 
 const ProfileForm = () => {
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
 
   const newPasswordInputRef = useRef();
@@ -17,8 +19,8 @@ const ProfileForm = () => {
     const newPassword = newPasswordInputRef.current.value;
 
     update(authCtx.token, newPassword).then((response) => {
-      console.log(response);
-      alert(response);
+      console.log("pwdchanged");
+      history.replace("/");
     });
   };
 
