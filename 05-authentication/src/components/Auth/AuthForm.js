@@ -10,6 +10,7 @@ const CONTENT_TYPE_JSON_HEADER = { "Content-Type": APPLICATION_JSON };
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const userInputRef = useRef();
   const passwordInputRef = useRef();
 
@@ -26,6 +27,7 @@ const AuthForm = () => {
     if (isLogin) {
       //todo login
     } else {
+      setIsLoading(true);
       fetch(`${API_URL}/v1/accounts:signUpWithCustomToken?key=${API_KEY}`, {
         method: "POST",
         headers: { ...CONTENT_TYPE_JSON_HEADER },
@@ -35,11 +37,15 @@ const AuthForm = () => {
           returnSecureToken: true,
         }),
       }).then((response) => {
+        setIsLoading(false);
         if (response.ok) {
           //cool cool cool
         } else {
           response.json().then((data) => {
-            console.error(data);
+            let errorMessage = "Authentication failed";
+            if (data?.error?.message) {
+              errorMessage = errorMessage + data.error.message;
+            }
           });
         }
       });
