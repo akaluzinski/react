@@ -9,20 +9,19 @@ const APPLICATION_JSON = "application/json";
 const CONTENT_TYPE_JSON_HEADER = { "Content-Type": APPLICATION_JSON };
 
 const signIn = (email, password) => {
-  return sendPost("signInWithPassword", email, password);
+  return sendPost("signInWithPassword", { email, password });
 };
 
 const signUp = (email, password) => {
-  return sendPost("signUp", email, password);
+  return sendPost("signUp", { email, password });
 };
 
-const sendPost = (method, email, password) => {
+export const sendPost = (method, params) => {
   return fetch(`${API_URL}/v1/accounts:${method}?key=${API_KEY}`, {
     method: "POST",
     headers: { ...CONTENT_TYPE_JSON_HEADER },
     body: JSON.stringify({
-      email,
-      password,
+      ...params,
       returnSecureToken: true,
     }),
   });
