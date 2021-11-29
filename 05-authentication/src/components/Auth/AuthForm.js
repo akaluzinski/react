@@ -3,7 +3,7 @@ import { useState, useRef } from "react";
 import classes from "./AuthForm.module.css";
 
 const API_URL = "https://identitytoolkit.googleapis.com";
-const API_KEY = "AIzaSyBkROQ0ksWxiq5QpJpyfC0YKZHl-KCFr08";
+const API_KEY = "";
 
 const APPLICATION_JSON = "application/json";
 const CONTENT_TYPE_JSON_HEADER = { "Content-Type": APPLICATION_JSON };
