@@ -1,5 +1,6 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import { API_KEY } from "../../keys";
+import AuthContext from "../../store/auth-context";
 import classes from "./AuthForm.module.css";
 
 const API_URL = "https://identitytoolkit.googleapis.com";
@@ -33,6 +34,8 @@ const AuthForm = () => {
   const userInputRef = useRef();
   const passwordInputRef = useRef();
 
+  const authCtx = useContext(AuthContext);
+
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
@@ -51,23 +54,21 @@ const AuthForm = () => {
           if (response.ok) {
             return response.json();
           } else {
-            response
-              .json()
-              .then((data) => {
-                let errorMessage = "Sign up failed: ";
-                if (data?.error?.message) {
-                  errorMessage = errorMessage + data.error.message;
-                }
-                console.log("ret a", errorMessage);
-                throw new Error(errorMessage);
-              })
-              .catch((err) => {
-                console.log(err);
-              });
+            response.json().then((data) => {
+              let errorMessage = "Sign up failed: ";
+              if (data?.error?.message) {
+                errorMessage = errorMessage + data.error.message;
+              }
+              console.log("ret a", errorMessage);
+              throw new Error(errorMessage);
+            });
           }
         })
         .then((data) => {
-          console.log("sign in successful", data);
+          authCtx.login(data.idToken);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     } else {
       setIsLoading(true);
